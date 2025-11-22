@@ -4,7 +4,7 @@ const cors = require("cors");
 const cookieParser = require("cookie-parser");
 const morgan = require("morgan");
 require("dotenv").config();
-const Auth = require("./routers/auth-router");
+const User = require("./routers/user-router");
 
 const app = express();
 
@@ -35,4 +35,4 @@ app.use(express.urlencoded({ extended: true }));
 app.use(express.static("public"));
 
 // Routes
-app.use("/auth", Auth);
+app.use("/user", User);

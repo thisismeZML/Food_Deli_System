@@ -1,13 +1,13 @@
 const createToken = require("../helpers/create-token");
-const Auth = require("../models/auth-model");
+const User = require("../models/user-model");
 const bcrypt = require("bcrypt");
 
-const AuthController = {
+const UserController = {
   register: async (req, res) => {
     try {
       const { username, email, password } = req.body;
 
-      const user = await Auth.findOne({ email });
+      const user = await User.findOne({ email });
 
       if (user) {
         return res.status(400).json({ message: "User already exists" });
@@ -16,7 +16,7 @@ const AuthController = {
       const salt = await bcrypt.genSalt(10);
       const hashedPassword = await bcrypt.hash(password, salt);
 
-      const newUser = await Auth.create({
+      const newUser = await User.create({
         username,
         email,
         password: hashedPassword,
@@ -44,9 +44,7 @@ const AuthController = {
     try {
       const { email, password } = req.body;
 
-      console.log(email);
-
-      const user = await Auth.findOne({ email });
+      const user = await User.findOne({ email });
 
       if (!user) {
         return res.status(400).json({ message: "User not found" });
@@ -73,9 +71,9 @@ const AuthController = {
     }
   },
 
-  users: async (req, res) => {
+  info: async (req, res) => {
     try {
-      const users = await Auth.find();
+      const users = await User.find();
       return res.status(200).json({ success: true, data: users });
     } catch (error) {
       return res.status(500).json({ message: error.message });
@@ -83,4 +81,4 @@ const AuthController = {
   },
 };
 
-module.exports = AuthController;
+module.exports = UserController;
